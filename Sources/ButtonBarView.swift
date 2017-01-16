@@ -143,7 +143,7 @@ open class ButtonBarView: UICollectionView {
         selectedBarFrame.origin.x = selectedCellFrame.origin.x
         if let childCell = cellForItem(at: selectedCellIndexPath) as? ButtonBarViewCell, !selectedBarWidthFillAvailableWidth {
             let newWidth = childCell.label.intrinsicContentSize.width
-            selectedBarFrame.origin.x = (selectedBarFrame.size.width / 2) - (newWidth / 2)
+            selectedBarFrame.origin.x += (selectedBarFrame.size.width / 2) - (newWidth / 2)
             selectedBarFrame.size.width = newWidth
         }
         
