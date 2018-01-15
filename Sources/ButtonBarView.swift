@@ -59,7 +59,8 @@ open class ButtonBarView: UICollectionView {
     var selectedBarVerticalAlignment: SelectedBarVerticalAlignment = .bottom
     var selectedBarAlignment: SelectedBarAlignment = .center
     var selectedIndex = 0
-
+    open var selectedBarWidthFillAvailableWidth: Bool = true
+    
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         addSubview(selectedBar)
@@ -77,8 +78,13 @@ open class ButtonBarView: UICollectionView {
 
     open func move(fromIndex: Int, toIndex: Int, progressPercentage: CGFloat, pagerScroll: PagerScroll) {
         selectedIndex = progressPercentage > 0.5 ? toIndex : fromIndex
-
-        let fromFrame = layoutAttributesForItem(at: IndexPath(item: fromIndex, section: 0))!.frame
+        
+        var fromFrame = layoutAttributesForItem(at: IndexPath(item: fromIndex, section: 0))!.frame
+        if let childCell = cellForItem(at: IndexPath(item: fromIndex, section: 0)) as? ButtonBarViewCell, !selectedBarWidthFillAvailableWidth {
+            let newWidth = childCell.label.intrinsicContentSize.width
+            fromFrame.origin.x += (fromFrame.size.width / 2) - (newWidth / 2)
+            fromFrame.size.width = newWidth
+        }
         let numberOfItems = dataSource!.collectionView(self, numberOfItemsInSection: 0)
 
         var toFrame: CGRect
@@ -87,12 +93,28 @@ open class ButtonBarView: UICollectionView {
             if toIndex < 0 {
                 let cellAtts = layoutAttributesForItem(at: IndexPath(item: 0, section: 0))
                 toFrame = cellAtts!.frame.offsetBy(dx: -cellAtts!.frame.size.width, dy: 0)
-            } else {
+                if let childCell = cellForItem(at: IndexPath(item: fromIndex, section: 0)) as? ButtonBarViewCell, !selectedBarWidthFillAvailableWidth {
+                    let newWidth = childCell.label.intrinsicContentSize.width
+                    toFrame.origin.x += (toFrame.size.width / 2) - (newWidth / 2)
+                    toFrame.size.width = newWidth
+                }
+            }
+            else {
                 let cellAtts = layoutAttributesForItem(at: IndexPath(item: (numberOfItems - 1), section: 0))
                 toFrame = cellAtts!.frame.offsetBy(dx: cellAtts!.frame.size.width, dy: 0)
+                if let childCell = cellForItem(at: IndexPath(item: (numberOfItems - 1), section: 0)) as? ButtonBarViewCell, !selectedBarWidthFillAvailableWidth {
+                    let newWidth = childCell.label.intrinsicContentSize.width
+                    toFrame.origin.x += (toFrame.size.width / 2) - (newWidth / 2)
+                    toFrame.size.width = newWidth
+                }
             }
         } else {
             toFrame = layoutAttributesForItem(at: IndexPath(item: toIndex, section: 0))!.frame
+            if let childCell = cellForItem(at: IndexPath(item: toIndex, section: 0)) as? ButtonBarViewCell, !selectedBarWidthFillAvailableWidth {
+                let newWidth = childCell.label.intrinsicContentSize.width
+                toFrame.origin.x += (toFrame.size.width / 2) - (newWidth / 2)
+                toFrame.size.width = newWidth
+            }
         }
 
         var targetFrame = fromFrame
@@ -124,7 +146,12 @@ open class ButtonBarView: UICollectionView {
 
         selectedBarFrame.size.width = selectedCellFrame.size.width
         selectedBarFrame.origin.x = selectedCellFrame.origin.x
-
+        if let childCell = cellForItem(at: selectedCellIndexPath) as? ButtonBarViewCell, !selectedBarWidthFillAvailableWidth {
+            let newWidth = childCell.label.intrinsicContentSize.width
+            selectedBarFrame.origin.x += (selectedBarFrame.size.width / 2) - (newWidth / 2)
+            selectedBarFrame.size.width = newWidth
+        }
+        
         if animated {
             UIView.animate(withDuration: 0.3, animations: { [weak self] in
                 self?.selectedBar.frame = selectedBarFrame
