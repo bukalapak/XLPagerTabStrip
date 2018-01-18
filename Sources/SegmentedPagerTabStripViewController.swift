@@ -64,6 +64,8 @@ open class SegmentedPagerTabStripViewController: PagerTabStripViewController, Pa
         segmentedControl.tintColor = settings.style.segmentedControlColor ?? segmentedControl.tintColor
         segmentedControl.addTarget(self, action: #selector(SegmentedPagerTabStripViewController.segmentedControlChanged(_:)), for: .valueChanged)
         reloadSegmentedControl()
+        
+        resizingViewController()
     }
 
     open override func reloadPagerTabStripView() {

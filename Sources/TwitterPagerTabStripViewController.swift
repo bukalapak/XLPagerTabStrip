@@ -72,6 +72,8 @@ open class TwitterPagerTabStripViewController: PagerTabStripViewController, Page
         titleView.addSubview(titleScrollView)
         titleView.addSubview(pageControl)
         reloadNavigationViewItems()
+        
+        resizingViewController()
     }
 
     open override func reloadPagerTabStripView() {

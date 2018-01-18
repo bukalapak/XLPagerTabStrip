@@ -103,12 +103,14 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
         containerView.showsHorizontalScrollIndicator = false
         containerView.isPagingEnabled = true
         reloadViewControllers()
-
+    }
+    
+    open func resizingViewController() {
         let childController = viewControllers[currentIndex]
-        //addChildViewController(childController)
+        addChildViewController(childController)
         childController.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        //containerView.addSubview(childController.view)
-        //childController.didMove(toParentViewController: self)
+        containerView.addSubview(childController.view)
+        childController.didMove(toParentViewController: self)
     }
 
     open override func viewWillAppear(_ animated: Bool) {
@@ -245,8 +247,8 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
                     childController.view.frame = CGRect(x: offsetForChild(at: index), y: 0, width: view.bounds.width, height: containerView.bounds.height)
                     childController.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
                 } else {
-                    addChildViewController(childController)
                     childController.beginAppearanceTransition(true, animated: false)
+                    addChildViewController(childController)
                     childController.view.frame = CGRect(x: offsetForChild(at: index), y: 0, width: view.bounds.width, height: containerView.bounds.height)
                     childController.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
                     containerView.addSubview(childController.view)
@@ -255,11 +257,11 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
                 }
             } else {
                 if childController.parent != nil {
-                    //childController.beginAppearanceTransition(false, animated: false)
-                    childController.view.removeFromSuperview()
+                    childController.beginAppearanceTransition(false, animated: false)
                     childController.willMove(toParentViewController: nil)
+                    childController.view.removeFromSuperview()
                     childController.removeFromParentViewController()
-                    //childController.endAppearanceTransition()
+                    childController.endAppearanceTransition()
                 }
             }
         }
