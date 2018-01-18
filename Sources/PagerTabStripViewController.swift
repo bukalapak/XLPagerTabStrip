@@ -103,7 +103,9 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
         containerView.showsHorizontalScrollIndicator = false
         containerView.isPagingEnabled = true
         reloadViewControllers()
-
+    }
+    
+    open func resizingViewController() {
         let childController = viewControllers[currentIndex]
         addChildViewController(childController)
         childController.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]

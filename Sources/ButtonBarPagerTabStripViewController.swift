@@ -166,6 +166,8 @@ open class ButtonBarPagerTabStripViewController: PagerTabStripViewController, Pa
             buttonBarView.register(ButtonBarViewCell.self, forCellWithReuseIdentifier:"Cell")
         }
         //-
+        
+        resizingViewController()
     }
 
     open override func viewWillAppear(_ animated: Bool) {
