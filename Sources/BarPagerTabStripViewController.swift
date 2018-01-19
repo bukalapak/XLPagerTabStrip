@@ -66,6 +66,8 @@ open class BarPagerTabStripViewController: PagerTabStripViewController, PagerTab
 
         barView.backgroundColor = settings.style.barBackgroundColor ?? barView.backgroundColor
         barView.selectedBar.backgroundColor = settings.style.selectedBarBackgroundColor ?? barView.selectedBar.backgroundColor
+        
+        resizingViewController()
     }
 
     open override func viewWillAppear(_ animated: Bool) {
